@@ -1,0 +1,12 @@
+# ========================
+# Spring 組態
+# ========================
+spring:
+  application:
+    name: springBootSample
+
+# ========================
+# Log4j2 組態
+# ========================
+logging:
+  config: classpath:logging/log4j2.xml

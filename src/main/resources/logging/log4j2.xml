@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration status="WARN" monitorInterval="300">
+
+	<!-- Properties -->
+	<Properties>
+	    <Property name="APPNAME">springBootSample</Property>
+		<Property name="HOSTNAME">${sys:user.name}</Property>
+		<Property name="LOG_FILE_PATH">_var/logs</Property>
+	</Properties>
+
+	<!-- Appenders -->
+	<Appenders>
+		<!-- Console Appender -->
+		<Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%20.20t][%-15.15X{clientIp}][%-40.40c{5.}-%3L][%-5p] %m%n%ex" />
+		</Console>
+
+		<!-- Rolling File Appender -->
+		<RollingRandomAccessFile name="FileAppender" fileName="${LOG_FILE_PATH}/${HOSTNAME}.log" filePattern="${LOG_FILE_PATH}/${HOSTNAME}.log.%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%20.20t][%-15.15X{clientIp}][%-40.40c{3.}-%3L][%-5p] %m%n%ex" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="5GB" />
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+			<DefaultRolloverStrategy max="20">
+				<Delete basePath="${LOG_FILE_PATH}" maxDepth="1">
+					<IfFileName glob="${APPNAME}*" />
+					<IfLastModified age="P210D" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingRandomAccessFile>
+
+	</Appenders>
+
+	<!-- Loggers -->
+	<Loggers>
+		<Logger name="com.fet.fcms.fcds" level="DEBUG" additivity="true" />
+
+		<Logger name="com.zaxxer" level="DEBUG" additivity="true" />
+		<Logger name="org.mybatis.spring" level="ERROR" additivity="true" />
+		
+		<Logger name="org.springframework.jdbc" level="INFO" additivity="true" />
+		<Logger name="org.springframework.boot.autoconfigure" level="INFO" additivity="true" />
+
+		<Root level="INFO" includeLocation="true">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppender" />
+		</Root>
+	</Loggers>
+
+</Configuration>
