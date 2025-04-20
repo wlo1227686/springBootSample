@@ -4,6 +4,10 @@
 spring:
   application:
     name: springBootSample
+  security:
+    user:
+      name: admin
+      password: admin
 
 # ========================
 # Log4j2 組態
